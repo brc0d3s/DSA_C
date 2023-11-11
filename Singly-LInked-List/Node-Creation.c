@@ -1,33 +1,28 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-// Node structure
-struct Node {
+struct Node{
     int data;
     struct Node* next;
 };
 
-int main() {
-    struct Node* head = NULL;
-    struct Node* ptr;
-
-    // Create a new node
-    ptr = (struct Node*)malloc(sizeof(struct Node));
-    if (ptr == NULL) {
-        printf("Memory allocation failed!");
-        return 0;
+struct Node* createNode(int data){
+    struct Node* newNode=(struct Node*)malloc(sizeof(struct Node));
+    if(newNode==NULL){
+        printf("Memory allocation failed");
+        return NULL;
     }
-    ptr->data = 10;
-    ptr->next = NULL;
+    newNode->data=data;
+    newNode->next=NULL;
+    return newNode;
+}
 
-    // Assign the new node to the head of the linked list
-    head = ptr;
-
-    // Print the data of the new node
-    printf("Data of the new node: %d\n", head->data);
-
-    // Free the memory allocated for the new node
-    free(ptr);
-
+int main(){
+    struct Node* newNode=createNode(45);
+    
+    printf("The data at the node is %d",newNode->data);
+    
+    free(newNode);
+    
     return 0;
 }
