@@ -9,7 +9,7 @@ int main(){
     }
 
     //LEFT SHIFT[DELETION]
-    for (i = 1; i < n-1; i++){
+    for (i = 1; i < n; i++){
         arr[i]=arr[i+1];
     }
     n--;
