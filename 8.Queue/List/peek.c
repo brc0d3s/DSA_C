@@ -6,48 +6,35 @@ struct Node {
     struct Node* next;
 };
 
-struct Queue {
-    struct Node* front;
-    struct Node* rear;
-};
+struct Node* front = NULL;
+struct Node* rear = NULL;
 
-void initialize(struct Queue* queue) {
-    queue->front = NULL;
-    queue->rear = NULL;
-}
-
-int isEmpty(struct Queue* queue) {
-    return queue->front == NULL;
-}
-
-void enqueue(struct Queue* queue, int value) {
+void enqueue(int value) {
     struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
     newNode->data = value;
     newNode->next = NULL;
 
-    if (isEmpty(queue)) {
-        queue->front = newNode;
-        queue->rear = newNode;
+    if (rear == NULL) {
+        front = rear = newNode;
     } else {
-        queue->rear->next = newNode;
-        queue->rear = newNode;
+        rear->next = newNode;
+        rear = newNode;
     }
 
     printf("Enqueued %d\n", value);
 }
 
-int dequeue(struct Queue* queue) {
-    if (isEmpty(queue)) {
+int dequeue() {
+    if (front == NULL) {
         printf("Queue is empty. Cannot dequeue.\n");
         return -1; // Return a sentinel value to indicate an empty queue
     } else {
-        struct Node* temp = queue->front;
+        struct Node* temp = front;
         int value = temp->data;
-        queue->front = queue->front->next;
+        front = front->next;
 
-        // Check if the queue becomes empty after dequeue
-        if (queue->front == NULL) {
-            queue->rear = NULL;
+        if (front == NULL) {
+            rear = NULL;
         }
 
         free(temp);
@@ -56,37 +43,34 @@ int dequeue(struct Queue* queue) {
     }
 }
 
-int peek(struct Queue* queue) {
-    if (isEmpty(queue)) {
+int peek() {
+    if (front == NULL) {
         printf("Queue is empty. Cannot peek.\n");
         return -1; // Return a sentinel value to indicate an empty queue
     } else {
-        int value = queue->front->data;
+        int value = front->data;
         printf("Peeked %d\n", value);
         return value;
     }
 }
 
 int main() {
-    struct Queue queue;
-    initialize(&queue);
+    enqueue(10);
+    enqueue(20);
+    enqueue(30);
+    enqueue(40);
+    enqueue(50);
 
-    enqueue(&queue, 10);
-    enqueue(&queue, 20);
-    enqueue(&queue, 30);
-    enqueue(&queue, 40);
-    enqueue(&queue, 50);
+    peek();
 
-    peek(&queue);
+    dequeue();
+    dequeue();
+    dequeue();
+    dequeue();
+    dequeue();
+    dequeue(); // Queue is empty, cannot dequeue
 
-    dequeue(&queue);
-    dequeue(&queue);
-    dequeue(&queue);
-    dequeue(&queue);
-    dequeue(&queue);
-    dequeue(&queue); // Queue is empty, cannot dequeue
-
-    peek(&queue); // Queue is empty, cannot peek
+    peek(); // Queue is empty, cannot peek
 
     return 0;
 }

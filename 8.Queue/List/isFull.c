@@ -6,45 +6,37 @@ struct Node {
     struct Node* next;
 };
 
-struct Queue {
-    struct Node* front;
-    struct Node* rear;
-};
+struct Node* front = NULL;
+struct Node* rear = NULL;
 
-void initialize(struct Queue* queue) {
-    queue->front = NULL;
-    queue->rear = NULL;
-}
-
-int isEmpty(struct Queue* queue) {
-    return queue->front == NULL;
-}
-
-void enqueue(struct Queue* queue, int value) {
+void enqueue(int value) {
     struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
     newNode->data = value;
     newNode->next = NULL;
 
-    if (isEmpty(queue)) {
-        queue->front = newNode;
-        queue->rear = newNode;
+    if (rear == NULL) {
+        front = rear = newNode;
     } else {
-        queue->rear->next = newNode;
-        queue->rear = newNode;
+        rear->next = newNode;
+        rear = newNode;
     }
 
     printf("Enqueued %d\n", value);
 }
 
-int main() {
-    struct Queue queue;
-    initialize(&queue);
+int isFull() {
+    printf("Queue is not full.\n");
+    return 0;
+}
 
-    enqueue(&queue, 10);
-    enqueue(&queue, 20);
-    enqueue(&queue, 30);
-    enqueue(&queue, 40);
-    enqueue(&queue, 50);
+int main() {
+    enqueue(10);
+    enqueue(20);
+    enqueue(30);
+    enqueue(40);
+    enqueue(50);
+
+    isFull();
 
     return 0;
 }

@@ -48,16 +48,6 @@ int dequeue(Queue* queue) {
     return value;
 }
 
-int isEmpty(Queue* queue) {
-    if (queue->front == NULL && queue->rear == NULL) {
-        printf("Queue is empty.\n");
-        return 1;
-    } else {
-        printf("Queue is not empty.\n");
-        return 0;
-    }
-}
-
 int main() {
     Queue queue;
     queue.front = NULL;
@@ -69,16 +59,12 @@ int main() {
     enqueue(&queue, 40);
     enqueue(&queue, 50);
 
-    isEmpty(&queue);
-
     dequeue(&queue);
     dequeue(&queue);
     dequeue(&queue);
     dequeue(&queue);
     dequeue(&queue);
     dequeue(&queue); // Queue is empty, cannot dequeue
-
-    isEmpty(&queue); // Queue is empty
 
     return 0;
 }

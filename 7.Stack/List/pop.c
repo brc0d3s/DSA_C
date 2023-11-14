@@ -1,44 +1,50 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_SIZE 100
-
-struct Stack {
-    int arr[MAX_SIZE];
-    int top;
+struct Node
+{
+    int data;
+    struct Node *next;
 };
 
-void initialize(struct Stack* stack) {
-    stack->top = -1;
+struct Stack
+{
+    struct Node *top;
+};
+
+void push(struct Stack *stack, int x)
+{
+    struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
+    newNode->data = x;
+    newNode->next = stack->top;
+    stack->top = newNode;
 }
 
-int isEmpty(struct Stack* stack) {
-    return stack->top == -1;
-}
-
-int pop(struct Stack* stack) {
-    if (isEmpty(stack)) {
-        printf("Stack is empty. Cannot pop.\n");
+int pop(struct Stack *stack)
+{
+    if (stack->top == NULL)
+    {
+        printf("Stack underflow");
         return -1;
     }
-    int data = stack->arr[stack->top];
-    stack->top--;
-    return data;
+
+    struct Node *temp = stack->top;
+    int popElement = temp->data;
+    stack->top = stack->top->next;
+    free(temp);
+
+    return popElement;
 }
 
-int main() {
-    struct Stack stack;
-    initialize(&stack);
+int main()
+{
+    struct Stack *stack = malloc(sizeof(struct Stack));
+    stack->top = NULL;
 
-    // Push some elements into the stack
-    stack.arr[++stack.top] = 10;
-    stack.arr[++stack.top] = 20;
-    stack.arr[++stack.top] = 30;
+    push(stack, 1);
+    push(stack, 2);
 
-    // Pop elements from the stack
-    printf("Popped element: %d\n", pop(&stack));
-    printf("Popped element: %d\n", pop(&stack));
-    printf("Popped element: %d\n", pop(&stack));
+    printf("Popped element is %d\n", pop(stack));
 
     return 0;
 }

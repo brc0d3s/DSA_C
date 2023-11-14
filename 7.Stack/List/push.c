@@ -10,38 +10,21 @@ struct Stack {
     struct Node* top;
 };
 
-void initialize(struct Stack* stack) {
-    stack->top = NULL;
-}
-
-int isEmpty(struct Stack* stack) {
-    return stack->top == NULL;
-}
-
-void push(struct Stack* stack, int element) {
+void push(struct Stack* stack, int data) {
     struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-    newNode->data = element;
+    newNode->data = data;
     newNode->next = stack->top;
     stack->top = newNode;
+    printf("Element %d pushed to the stack.\n", data);
 }
 
 int main() {
-    struct Stack stack;
-    initialize(&stack);
+    struct Stack* stack = (struct Stack*)malloc(sizeof(struct Stack));
+    stack->top = NULL;
 
-    // Push some elements into the stack
-    push(&stack, 10);
-    push(&stack, 20);
-    push(&stack, 30);
-
-    // Print the elements in the stack
-    printf("Elements in the stack: ");
-    struct Node* current = stack.top;
-    while (current != NULL) {
-        printf("%d ", current->data);
-        current = current->next;
-    }
-    printf("\n");
+    push(stack, 10);
+    push(stack, 20);
+    push(stack, 30);
 
     return 0;
 }
