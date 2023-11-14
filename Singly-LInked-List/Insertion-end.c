@@ -1,42 +1,37 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Node structure
 struct Node {
     int data;
     struct Node* next;
 };
 
-// Function to create a new node
-struct Node* createNode(int data) {
+void insertAtEnd(struct Node** head, int value) {
+    // Allocate memory for the new node
     struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-    if (newNode == NULL) {
-        printf("Memory allocation failed!");
-        return NULL;
-    }
-    newNode->data = data;
-    newNode->next = NULL;
-    return newNode;
-}
 
-// Function to insert a node at the end of the linked list
-void insertAtEnd(struct Node** head, int data) {
-    struct Node* newNode = createNode(data);
+    // Assign the data value to the new node
+    newNode->data = value;
+    newNode->next = NULL;
+
+    // If the linked list is empty, make the new node the head
     if (*head == NULL) {
         *head = newNode;
-    } else {
-        struct Node* current = *head;
-        while (current->next != NULL) {
-            current = current->next;
-        }
-        current->next = newNode;
+        return;
     }
+
+    // Traverse to the last node
+    struct Node* current = *head;
+    while (current->next != NULL) {
+        current = current->next;
+    }
+
+    // Change the next pointer of the last node to the new node
+    current->next = newNode;
 }
 
-// Function to print the linked list
-void printList(struct Node* head) {
+void traverseLinkedList(struct Node* head) {
     struct Node* current = head;
-    printf("Linked List: ");
     while (current != NULL) {
         printf("%d ", current->data);
         current = current->next;
@@ -48,14 +43,21 @@ int main() {
     struct Node* head = NULL;
 
     // Insert nodes at the end
-    insertAtEnd(&head, 12);
-    insertAtEnd(&head, 22);
-    insertAtEnd(&head, 30);
-    insertAtEnd(&head, 44);
-    insertAtEnd(&head, 50);
+    insertAtEnd(&head, 1);
+    insertAtEnd(&head, 2);
+    insertAtEnd(&head, 3);
+    insertAtEnd(&head, 4);
 
-    // Print the linked list
-    printList(head);
+    // Traverse the linked list
+    traverseLinkedList(head);
+
+    // Free the memory
+    struct Node* current = head;
+    while (current != NULL) {
+        struct Node* temp = current;
+        current = current->next;
+        free(temp);
+    }
 
     return 0;
 }
