@@ -1,35 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Node structure
 struct Node {
     int data;
     struct Node* next;
 };
 
-// Function to create a new node
-struct Node* createNode(int data) {
+void insertAtBeginning(struct Node** head, int value) {
+    // Allocate memory for the new node
     struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-    if (newNode == NULL) {
-        printf("Memory allocation failed!");
-        return NULL;
-    }
-    newNode->data = data;
-    newNode->next = NULL;
-    return newNode;
-}
 
-// Function to insert a node at the beginning of the linked list
-void insertAtBegin(struct Node** head, int data) {
-    struct Node* newNode = createNode(data);
+    // Assign the data value to the new node
+    newNode->data = value;
+
+    // Set the next pointer of the new node to point to the current head
     newNode->next = *head;
+
+    // Update the head pointer to point to the new node
     *head = newNode;
 }
 
-// Function to print the linked list
-void printList(struct Node* head) {
+void traverseLinkedList(struct Node* head) {
     struct Node* current = head;
-    printf("Linked List: ");
     while (current != NULL) {
         printf("%d ", current->data);
         current = current->next;
@@ -41,14 +33,21 @@ int main() {
     struct Node* head = NULL;
 
     // Insert nodes at the beginning
-    insertAtBegin(&head, 50);
-    insertAtBegin(&head, 44);
-    insertAtBegin(&head, 30);
-    insertAtBegin(&head, 22);
-    insertAtBegin(&head, 12);
+    insertAtBeginning(&head, 4);
+    insertAtBeginning(&head, 3);
+    insertAtBeginning(&head, 2);
+    insertAtBeginning(&head, 1);
 
-    // Print the linked list
-    printList(head);
+    // Traverse the linked list
+    traverseLinkedList(head);
+
+    // Free the memory
+    struct Node* current = head;
+    while (current != NULL) {
+        struct Node* temp = current;
+        current = current->next;
+        free(temp);
+    }
 
     return 0;
 }
