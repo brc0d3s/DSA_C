@@ -1,39 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Node structure
 struct Node {
     int data;
     struct Node* next;
 };
 
-// Function to create a new node
-struct Node* createNode(int data) {
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-    if (newNode == NULL) {
-        printf("Memory allocation failed!");
-        return NULL;
-    }
-    newNode->data = data;
-    newNode->next = NULL;
-    return newNode;
-}
-
-// Function to delete a node at the beginning of the linked list
-void deleteAtBegin(struct Node** head) {
+void deleteFromBeginning(struct Node** head) {
+    // If the linked list is empty, return
     if (*head == NULL) {
-        printf("Linked list is already empty!");
+        printf("The list is empty.\n");
         return;
     }
-    struct Node* temp = *head;
+
+    // Point the head pointer to the second node
     *head = (*head)->next;
-    free(temp);
 }
 
-// Function to print the linked list
-void printList(struct Node* head) {
+void traverseLinkedList(struct Node* head) {
     struct Node* current = head;
-    printf("Linked List: ");
     while (current != NULL) {
         printf("%d ", current->data);
         current = current->next;
@@ -44,17 +29,37 @@ void printList(struct Node* head) {
 int main() {
     struct Node* head = NULL;
 
-    // Create the linked list
-    head = createNode(2);
-    head->next = createNode(3);
-    head->next->next = createNode(4);
-    head->next->next->next = createNode(5);
+    // Insert nodes at the beginning
+    head = (struct Node*)malloc(sizeof(struct Node));
+    head->data = 4;
 
-    // Delete a node at the beginning
-    deleteAtBegin(&head);
+    struct Node* second = (struct Node*)malloc(sizeof(struct Node));
+    second->data = 3;
 
-    // Print the linked list
-    printList(head);
+    struct Node* third = (struct Node*)malloc(sizeof(struct Node));
+    third->data = 2;
+
+    struct Node* fourth = (struct Node*)malloc(sizeof(struct Node));
+    fourth->data = 1;
+
+    head->next = second;
+    second->next = third;
+    third->next = fourth;
+    fourth->next = NULL;
+
+    // Delete node from the beginning
+    deleteFromBeginning(&head);
+
+    // Traverse the linked list
+    traverseLinkedList(head);
+
+    // Free the memory
+    struct Node* current = head;
+    while (current != NULL) {
+        struct Node* temp = current;
+        current = current->next;
+        free(temp);
+    }
 
     return 0;
 }
