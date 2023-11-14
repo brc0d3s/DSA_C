@@ -1,39 +1,34 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Node structure
 struct Node {
     int data;
     struct Node* next;
 };
 
-// Function to create a new node
-struct Node* createNode(int data) {
+void insertAtMiddle(struct Node** head_ref, int data) {
     struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-    if (newNode == NULL) {
-        printf("Memory allocation failed!");
-        return NULL;
-    }
     newNode->data = data;
     newNode->next = NULL;
-    return newNode;
-}
 
-// Function to insert a node after a specified node in the linked list
-void insertAfter(struct Node* prevNode, int data) {
-    if (prevNode == NULL) {
-        printf("Previous node cannot be NULL!");
-        return;
+    if (*head_ref == NULL) {
+        *head_ref = newNode;
+    } else {
+        struct Node* slow_ptr = *head_ref;
+        struct Node* fast_ptr = *head_ref;
+
+        while (fast_ptr != NULL && fast_ptr->next != NULL) {
+            fast_ptr = fast_ptr->next->next;
+            slow_ptr = slow_ptr->next;
+        }
+
+        newNode->next = slow_ptr->next;
+        slow_ptr->next = newNode;
     }
-    struct Node* newNode = createNode(data);
-    newNode->next = prevNode->next;
-    prevNode->next = newNode;
 }
 
-// Function to print the linked list
 void printList(struct Node* head) {
     struct Node* current = head;
-    printf("Linked List: ");
     while (current != NULL) {
         printf("%d ", current->data);
         current = current->next;
@@ -44,18 +39,24 @@ void printList(struct Node* head) {
 int main() {
     struct Node* head = NULL;
 
-    // Create the linked list
-    head = createNode(2);
-    head->next = createNode(3);
-    head->next->next = createNode(4);
-    head->next->next->next = createNode(5);
-
-    // Insert a node after a specified node
-    struct Node* insertAfterNode = head->next; // Insert after node with data 3
-    insertAfter(insertAfterNode, 1);
+    // Insert nodes into the linked list
+    insertAtMiddle(&head, 1);
+    insertAtMiddle(&head, 2);
+    insertAtMiddle(&head, 3);
+    insertAtMiddle(&head, 4);
+    insertAtMiddle(&head, 5);
 
     // Print the linked list
+    printf("Linked list: ");
     printList(head);
+
+    // Free the memory
+    struct Node* current = head;
+    while (current != NULL) {
+        struct Node* temp = current;
+        current = current->next;
+        free(temp);
+    }
 
     return 0;
 }
