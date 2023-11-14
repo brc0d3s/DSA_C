@@ -1,53 +1,33 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Node structure
 struct Node {
     int data;
     struct Node* next;
 };
 
-// Function to create a new node
-struct Node* createNode(int data) {
+void insertAtMiddle(struct Node** head, int value, int position) {
+    // Allocate memory for the new node
     struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-    if (newNode == NULL) {
-        printf("Memory allocation failed!");
-        return NULL;
-    }
-    newNode->data = data;
-    newNode->next = NULL;
-    return newNode;
-}
 
-// Function to insert a node at the end of the linked list
-void insertAtEnd(struct Node** head, int data) {
-    struct Node* newNode = createNode(data);
-    if (*head == NULL) {
-        *head = newNode;
-    } else {
-        struct Node* current = *head;
-        while (current->next != NULL) {
-            current = current->next;
+    // Assign the data value to the new node
+    newNode->data = value;
+
+    // Traverse to the node just before the required position
+    struct Node* temp = *head;
+    for (int i = 2; i < position; i++) {
+        if (temp->next != NULL) {
+            temp = temp->next;
         }
-        current->next = newNode;
     }
+
+    // Change the next pointers to include the new node in between
+    newNode->next = temp->next;
+    temp->next = newNode;
 }
 
-// Function to delete a node after a specified node in the linked list
-void deleteAfter(struct Node* prevNode) {
-    if (prevNode == NULL || prevNode->next == NULL) {
-        printf("Cannot delete after specified node!");
-        return;
-    }
-    struct Node* temp = prevNode->next;
-    prevNode->next = temp->next;
-    free(temp);
-}
-
-// Function to print the linked list
-void printList(struct Node* head) {
+void traverseLinkedList(struct Node* head) {
     struct Node* current = head;
-    printf("Linked List: ");
     while (current != NULL) {
         printf("%d ", current->data);
         current = current->next;
@@ -58,22 +38,22 @@ void printList(struct Node* head) {
 int main() {
     struct Node* head = NULL;
 
-    // Insert nodes at the end
-    insertAtEnd(&head, 12);
-    insertAtEnd(&head, 22);
-    insertAtEnd(&head, 30);
-    insertAtEnd(&head, 44);
-    insertAtEnd(&head, 50);
+    // Insert nodes at the middle
+    insertAtMiddle(&head, 1, 1);
+    insertAtMiddle(&head, 3, 2);
+    insertAtMiddle(&head, 2, 2);
+    insertAtMiddle(&head, 4, 4);
 
-    // Print the linked list
-    printList(head);
+    // Traverse the linked list
+    traverseLinkedList(head);
 
-    // Delete node after specified node
-    struct Node* prevNode = head->next; // Delete after node with data 22
-    deleteAfter(prevNode);
-
-    // Print the updated linked list
-    printList(head);
+    // Free the memory
+    struct Node* current = head;
+    while (current != NULL) {
+        struct Node* temp = current;
+        current = current->next;
+        free(temp);
+    }
 
     return 0;
 }
