@@ -1,55 +1,38 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Node structure
 struct Node {
     int data;
     struct Node* next;
 };
 
-// Function to create a new node
-struct Node* createNode(int data) {
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-    if (newNode == NULL) {
-        printf("Memory allocation failed!");
-        return NULL;
-    }
-    newNode->data = data;
-    newNode->next = NULL;
-    return newNode;
-}
-
-// Function to delete the last node of the linked list
-void deleteLast(struct Node** head) {
-    struct Node* temp = *head;
-    struct Node* last = NULL;
-
-    if (*head == NULL)
+void deleteFromEnd(struct Node** head) {
+    // If the linked list is empty, return
+    if (*head == NULL) {
+        printf("The list is empty.\n");
         return;
+    }
 
+    // If there is only one node in the list, delete it
     if ((*head)->next == NULL) {
         free(*head);
         *head = NULL;
         return;
     }
 
-    // Find the second last node
+    // Traverse to the second last element
+    struct Node* temp = *head;
     while (temp->next->next != NULL) {
-        last = temp;
         temp = temp->next;
     }
 
-    // Change next of second last
-    last->next = NULL;
-
-    // Free memory of last node
-    free(temp);
+    // Change the next pointer of the second last element to NULL
+    free(temp->next);
+    temp->next = NULL;
 }
 
-// Function to print the linked list
-void printList(struct Node* head) {
+void traverseLinkedList(struct Node* head) {
     struct Node* current = head;
-    printf("Linked List: ");
     while (current != NULL) {
         printf("%d ", current->data);
         current = current->next;
@@ -60,17 +43,33 @@ void printList(struct Node* head) {
 int main() {
     struct Node* head = NULL;
 
-    // Create the linked list
-    head = createNode(2);
-    head->next = createNode(3);
-    head->next->next = createNode(4);
-    head->next->next->next = createNode(5);
+    // Insert nodes at the end
+    struct Node* first = (struct Node*)malloc(sizeof(struct Node));
+    first->data = 1;
 
-    // Delete the last node
-    deleteLast(&head);
+    struct Node* second = (struct Node*)malloc(sizeof(struct Node));
+    second->data = 2;
 
-    // Print the linked list
-    printList(head);
+    struct Node* third = (struct Node*)malloc(sizeof(struct Node));
+    third->data = 3;
+
+    first->next = second;
+    second->next = third;
+    third->next = NULL;
+
+    // Delete node from the end
+    deleteFromEnd(&head);
+
+    // Traverse the linked list
+    traverseLinkedList(head);
+
+    // Free the memory
+    struct Node* current = head;
+    while (current != NULL) {
+        struct Node* temp = current;
+        current = current->next;
+        free(temp);
+    }
 
     return 0;
 }
