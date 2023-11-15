@@ -11,7 +11,11 @@ struct Stack {
 };
 
 void push(struct Stack* stack, int data) {
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    struct Node* newNode = malloc(sizeof(struct Node));
+    if (newNode == NULL) {
+        printf("Memory allocation failed. Cannot push element %d.\n", data);
+        return;
+    }
     newNode->data = data;
     newNode->next = stack->top;
     stack->top = newNode;
@@ -19,7 +23,7 @@ void push(struct Stack* stack, int data) {
 }
 
 int main() {
-    struct Stack* stack = (struct Stack*)malloc(sizeof(struct Stack));
+    struct Stack* stack = malloc(sizeof(struct Stack));
     stack->top = NULL;
 
     push(stack, 10);
