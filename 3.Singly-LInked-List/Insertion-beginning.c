@@ -1,53 +1,48 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
-
-struct Node {
-    int data;
-    struct Node* next;
+struct node {
+   int data;
+   struct node *next;
 };
+struct node *head = NULL;
+struct node *current = NULL;
 
-void insertAtBeginning(struct Node** head, int value) {
-    // Allocate memory for the new node
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-
-    // Assign the data value to the new node
-    newNode->data = value;
-
-    // Set the next pointer of the new node to point to the current head
-    newNode->next = *head;
-
-    // Update the head pointer to point to the new node
-    *head = newNode;
+// display the list
+void printList(){
+   struct node *p = head;
+   printf("\n[");
+   
+   //start from the beginning
+   while(p != NULL) {
+      printf(" %d--> ",p->data);
+      p = p->next;
+   }
+   printf("]\n");
 }
 
-void traverseLinkedList(struct Node* head) {
-    struct Node* current = head;
-    while (current != NULL) {
-        printf("%d ", current->data);
-        current = current->next;
-    }
-    printf("\n");
+//insertion at the beginning
+void insertatbegin(int data){
+   
+   //create a link
+   struct node *lk = (struct node*) malloc(sizeof(struct node));
+   lk->data = data;
+   
+   // point it to old first node
+   lk->next = head;
+   
+   //point first to new first node
+   head = lk;
 }
-
-int main() {
-    struct Node* head = NULL;
-
-    // Insert nodes at the beginning
-    insertAtBeginning(&head, 4);
-    insertAtBeginning(&head, 3);
-    insertAtBeginning(&head, 2);
-    insertAtBeginning(&head, 1);
-
-    // Traverse the linked list
-    traverseLinkedList(head);
-
-    // Free the memory
-    struct Node* current = head;
-    while (current != NULL) {
-        struct Node* temp = current;
-        current = current->next;
-        free(temp);
-    }
-
-    return 0;
+void main(){
+   int k=0;
+   insertatbegin(12);
+   insertatbegin(22);
+   insertatbegin(30);
+   insertatbegin(44);
+   insertatbegin(50);
+   printf("Linked List: ");
+   
+   // print list
+   printList();
 }
